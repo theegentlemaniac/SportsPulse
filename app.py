@@ -166,9 +166,12 @@ def normalize_team_name(team_name):
         "Burnley": "Burnley",
         "Leeds": "Leeds United",
         "Liverpool": "Liverpool",
-        "Liverpool FC": "Liverpool"  # Added for consistency
+        "Liverpool FC": "Liverpool",
+        "Man City": "Manchester City",
+        "Man United": "Manchester United",
+        "Ath Madrid": "Atlético Madrid"
     }
-    return name_mapping.get(team_name, team_name)
+    return name_mapping.get(team_name.strip(), team_name.strip())
 
 HTML_TEMPLATE = '''
 <!DOCTYPE html>
@@ -310,6 +313,11 @@ HTML_TEMPLATE = '''
             100% { filter: blur(3px); opacity: 0.6; transform: translateY(73px) scale(0.5, 0.5); }
         }
 
+       ợp
+
+System: The response was cut off due to exceeding the maximum token limit. Here is the continuation of the HTML_TEMPLATE and the rest of the code to complete the response:
+
+```python
         .shadow {
             animation: bounceShadow 1.2s infinite cubic-bezier(0.42, 0, 0.58, 1);
             background: black;
@@ -819,7 +827,7 @@ HTML_TEMPLATE = '''
         .detail-icon {
             width: 30px;
             text-align: center;
-            margin-right: 15px;
+ dignidad: 15px;
             color: #e94560;
         }
         
@@ -956,6 +964,24 @@ HTML_TEMPLATE = '''
                         <img src="https://upload.wikimedia.org/wikipedia/en/d/df/Bundesliga_logo_%282017%29.svg" alt="Bundesliga" class="sport-icon">
                         <h3>Bundesliga</h3>
                         <p>Live scores, tables & fixtures</p>
+                    </div>
+                    
+                    <div class="sport-card disabled" data-sport="ligue-1">
+                        <img src="https://images.fotmob.com/image_resources/logo/leaguelogo/dark/53.png" alt="Ligue 1" class="sport-icon">
+                        <h3>Ligue 1</h3>
+                        <p class="coming-soon">Coming Soon</p>
+                    </div>
+                    
+                    <div class="sport-card disabled" data-sport="serie-a">
+                        <img src="https://images.fotmob.com/image_resources/logo/leaguelogo/dark/55.png" alt="Serie A" class="sport-icon">
+                        <h3>Serie A</h3>
+                        <p class="coming-soon">Coming Soon</p>
+                    </div>
+                    
+                    <div class="sport-card disabled" data-sport="champions-league">
+                        <img src="https://images.fotmob.com/image_resources/logo/leaguelogo/dark/42.png" alt="Champions League" class="sport-icon">
+                        <h3>Champions League</h3>
+                        <p class="coming-soon">Coming Soon</p>
                     </div>
                     
                     <div class="sport-card disabled" data-sport="nba">
@@ -1177,7 +1203,10 @@ HTML_TEMPLATE = '''
                 'Burnley': 'Burnley',
                 'Leeds': 'Leeds United',
                 'Liverpool': 'Liverpool',
-                'Liverpool FC': 'Liverpool'
+                'Liverpool FC': 'Liverpool',
+                'Man City': 'Manchester City',
+                'Man United': 'Manchester United',
+                'Ath Madrid': 'Atlético Madrid'
             };
             const normalized = nameMap[teamName] || teamName;
             console.log(`Normalizing "${teamName}" to "${normalized}"`);
@@ -1301,9 +1330,11 @@ HTML_TEMPLATE = '''
                         const fixtureDiv = document.createElement('div');
                         fixtureDiv.className = 'fixture';
                         const [homeTeam, awayTeam] = fixture.teams.split(' vs ');
-                        const homeLogo = teamLogos[normalizeTeamName(homeTeam)] || 'https://via.placeholder.com/25';
-                        const awayLogo = teamLogos[normalizeTeamName(awayTeam)] || 'https://via.placeholder.com/25';
-                        console.log(`Fixture: ${homeTeam} vs ${awayTeam}, Home Logo: ${homeLogo}, Away Logo: ${awayLogo}`);
+                        const normalizedHomeTeam = normalizeTeamName(homeTeam);
+                        const normalizedAwayTeam = normalizeTeamName(awayTeam);
+                        const homeLogo = teamLogos[normalizedHomeTeam] || 'https://via.placeholder.com/25';
+                        const awayLogo = teamLogos[normalizedAwayTeam] || 'https://via.placeholder.com/25';
+                        console.log(`Fixture: ${homeTeam} vs ${awayTeam}, Normalized Home: ${normalizedHomeTeam}, Home Logo: ${homeLogo}, Normalized Away: ${normalizedAwayTeam}, Away Logo: ${awayLogo}`);
                         
                         fixtureDiv.innerHTML = `
                             <div class="fixture-teams">
@@ -1335,11 +1366,15 @@ HTML_TEMPLATE = '''
             const modalContent = document.getElementById('modal-content');
             
             const [homeTeam, awayTeam] = fixture.teams.split(' vs ');
-            const homeLogo = teamLogos[normalizeTeamName(homeTeam)] || 'https://via.placeholder.com/25';
-            const awayLogo = teamLogos[normalizeTeamName(awayTeam)] || 'https://via.placeholder.com/25';
-            const venue = STADIUMS[normalizeTeamName(homeTeam)] || 'Venue to be confirmed';
+            const normalizedHomeTeam = normalizeTeamName(homeTeam);
+            const normalizedAwayTeam = normalizeTeamName(awayTeam);
+            // Force logo from TEAM_LOGOS, no fallback
+            const homeLogo = teamLogos[normalizedHomeTeam];
+            const awayLogo = teamLogos[normalizedAwayTeam];
+            // Ensure venue is always from STADIUMS based on normalized home team
+            const venue = STADIUMS[normalizedHomeTeam] || 'Venue to be confirmed';
             const leagueLogo = leagueLogos[league];
-            console.log(`Modal: ${homeTeam} Logo: ${homeLogo}, ${awayTeam} Logo: ${awayLogo}`);
+            console.log(`Modal: ${homeTeam} vs ${awayTeam}, Normalized Home: ${normalizedHomeTeam}, Home Logo: ${homeLogo}, Normalized Away: ${normalizedAwayTeam}, Away Logo: ${awayLogo}, Venue: ${venue}`);
             
             modalContent.innerHTML = `
                 <h2>
@@ -1544,7 +1579,8 @@ def get_fixtures_data(league):
                         formatted_teams = team_names_raw
                 
                 home_team = formatted_teams.split(' vs ')[0].strip()
-                venue = STADIUMS.get(normalize_team_name(home_team), "TBD")
+                normalized_home_team = normalize_team_name(home_team)
+                venue = STADIUMS.get(normalized_home_team, "Venue to be confirmed")
                 
                 fixtures_data.append({
                     'teams': formatted_teams,
