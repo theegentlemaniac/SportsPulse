@@ -303,7 +303,7 @@ function hideLoader() {
 
 // Show sports selection
 function showSportsSelection() {
-    ['premierLeagueDashboard', 'laLigaDashboard', 'bundesligaDashboard'].forEach(id => {
+    ['premierLeagueDashboard', 'laLigaDashboard', 'bundesligaDashboard', 'highlightsDashboard', 'teamHighlightsDashboard'].forEach(id => {
         const dashboard = document.getElementById(id);
         dashboard.classList.remove('visible');
         setTimeout(() => { dashboard.style.display = 'none'; }, 800);
@@ -314,12 +314,47 @@ function showSportsSelection() {
 // Show league dashboard
 function showLeagueDashboard(leagueId) {
     document.getElementById('sportsSelection').style.display = 'none';
-    document.getElementById(leagueId).style.display = 'block';
+    document.getElementById('highlightsDashboard').style.display = 'none';
+    document.getElementById('teamHighlightsDashboard').style.display = 'none';
+    const dashboard = document.getElementById(leagueId);
+    dashboard.style.display = 'block';
     setTimeout(() => {
-        document.getElementById(leagueId).classList.add('visible');
+        dashboard.classList.add('visible');
         if (leagueId === 'premierLeagueDashboard') loadPremierLeagueData();
         else if (leagueId === 'laLigaDashboard') loadLaLigaData();
         else if (leagueId === 'bundesligaDashboard') loadBundesligaData();
+    }, 50);
+}
+
+// Show highlights dashboard
+function showHighlightsDashboard(league) {
+    document.getElementById('sportsSelection').style.display = 'none';
+    ['premierLeagueDashboard', 'laLigaDashboard', 'bundesligaDashboard', 'teamHighlightsDashboard'].forEach(id => {
+        const dashboard = document.getElementById(id);
+        dashboard.classList.remove('visible');
+        setTimeout(() => { dashboard.style.display = 'none'; }, 800);
+    });
+    const highlightsDashboard = document.getElementById('highlightsDashboard');
+    highlightsDashboard.style.display = 'block';
+    setTimeout(() => {
+        highlightsDashboard.classList.add('visible');
+        loadHighlights(league);
+    }, 50);
+}
+
+// Show team highlights dashboard
+function showTeamHighlightsDashboard(team, league) {
+    document.getElementById('sportsSelection').style.display = 'none';
+    ['premierLeagueDashboard', 'laLigaDashboard', 'bundesligaDashboard', 'highlightsDashboard'].forEach(id => {
+        const dashboard = document.getElementById(id);
+        dashboard.classList.remove('visible');
+        setTimeout(() => { dashboard.style.display = 'none'; }, 800);
+    });
+    const teamHighlightsDashboard = document.getElementById('teamHighlightsDashboard');
+    teamHighlightsDashboard.style.display = 'block';
+    setTimeout(() => {
+        teamHighlightsDashboard.classList.add('visible');
+        loadTeamHighlights(team, league);
     }, 50);
 }
 
@@ -352,20 +387,20 @@ async function loadTable(league, prefix) {
             statusContainer.appendChild(statusDiv);
         }
         
-        result.data.forEach(team => {
+        result.data.forEach((team, index) => {
             const row = document.createElement('tr');
             const normalizedTeam = normalizeTeamName(team.team);
-            const logo = teamLogos[normalizedTeam];
+            const logo = teamLogos[normalizedTeam] || 'https://via.placeholder.com/25';
             const fact = TEAM_FACTS[normalizedTeam] || 'Interesting facts about this team coming soon';
             
-            if (!logo) {
+            if (!teamLogos[normalizedTeam]) {
                 console.error(`No logo found for team: ${normalizedTeam}`);
             }
             
             row.innerHTML = `
                 <td>${team.position}</td>
                 <td class="team-cell">
-                    <img src="${logo}" alt="${team.team}" class="team-logo" onerror="this.onerror=null;this.src='https://via.placeholder.com/25';">
+                    <img src="${logo}" alt="${team.team}" class="team-logo" onerror="this.src='https://via.placeholder.com/25';">
                     ${team.team}
                     <div class="team-tooltip">
                         <strong>${team.team}</strong>
@@ -379,6 +414,7 @@ async function loadTable(league, prefix) {
                 <td>${team.goal_difference}</td>
                 <td>${team.points}</td>
             `;
+            row.style.animationDelay = `${index * 0.05}s`;
             tableBody.appendChild(row);
         });
         
@@ -412,28 +448,29 @@ async function loadFixtures(league, prefix) {
         if (result.data.length === 0) {
             fixturesList.innerHTML = '<div class="status">No upcoming fixtures found.</div>';
         } else {
-            result.data.forEach(fixture => {
+            result.data.forEach((fixture, index) => {
                 const fixtureDiv = document.createElement('div');
                 fixtureDiv.className = 'fixture';
                 const [homeTeam, awayTeam] = fixture.teams.split(' vs ');
                 const normalizedHomeTeam = normalizeTeamName(homeTeam);
                 const normalizedAwayTeam = normalizeTeamName(awayTeam);
-                const homeLogo = teamLogos[normalizedHomeTeam];
-                const awayLogo = teamLogos[normalizedAwayTeam];
+                const homeLogo = teamLogos[normalizedHomeTeam] || 'https://via.placeholder.com/25';
+                const awayLogo = teamLogos[normalizedAwayTeam] || 'https://via.placeholder.com/25';
                 
-                if (!homeLogo) console.error(`No logo for home team: ${normalizedHomeTeam}`);
-                if (!awayLogo) console.error(`No logo for away team: ${normalizedAwayTeam}`);
+                if (!teamLogos[normalizedHomeTeam]) console.error(`No logo for home team: ${normalizedHomeTeam}`);
+                if (!teamLogos[normalizedAwayTeam]) console.error(`No logo for away team: ${normalizedAwayTeam}`);
                 
                 fixtureDiv.innerHTML = `
                     <div class="fixture-teams">
-                        <img src="${homeLogo}" alt="${homeTeam}" class="team-logo" onerror="this.onerror=null;this.src='https://via.placeholder.com/25';">
+                        <img src="${homeLogo}" alt="${homeTeam}" class="team-logo" onerror="this.src='https://via.placeholder.com/25';">
                         <span>${homeTeam}</span>
                         <span>vs</span>
                         <span>${awayTeam}</span>
-                        <img src="${awayLogo}" alt="${awayTeam}" class="team-logo" onerror="this.onerror=null;this.src='https://via.placeholder.com/25';">
+                        <img src="${awayLogo}" alt="${awayTeam}" class="team-logo" onerror="this.src='https://via.placeholder.com/25';">
                     </div>
                     <div class="fixture-date">${fixture.date}</div>
                 `;
+                fixtureDiv.style.animationDelay = `${index * 0.1}s`;
                 fixtureDiv.addEventListener('click', () => showFixtureDetails(fixture, league));
                 fixturesList.appendChild(fixtureDiv);
             });
@@ -468,28 +505,29 @@ async function loadResults(league, prefix) {
         if (result.data.length === 0) {
             resultsList.innerHTML = '<div class="status">No recent results found.</div>';
         } else {
-            result.data.forEach(result => {
+            result.data.forEach((result, index) => {
                 const resultDiv = document.createElement('div');
                 resultDiv.className = 'result';
                 const [homeTeam, awayTeam] = result.teams.split(' vs ');
                 const normalizedHomeTeam = normalizeTeamName(homeTeam);
                 const normalizedAwayTeam = normalizeTeamName(awayTeam);
-                const homeLogo = teamLogos[normalizedHomeTeam];
-                const awayLogo = teamLogos[normalizedAwayTeam];
+                const homeLogo = teamLogos[normalizedHomeTeam] || 'https://via.placeholder.com/25';
+                const awayLogo = teamLogos[normalizedAwayTeam] || 'https://via.placeholder.com/25';
                 
-                if (!homeLogo) console.error(`No logo for home team: ${normalizedHomeTeam}`);
-                if (!awayLogo) console.error(`No logo for away team: ${normalizedAwayTeam}`);
+                if (!teamLogos[normalizedHomeTeam]) console.error(`No logo for home team: ${normalizedHomeTeam}`);
+                if (!teamLogos[normalizedAwayTeam]) console.error(`No logo for away team: ${normalizedAwayTeam}`);
                 
                 resultDiv.innerHTML = `
                     <div class="result-teams">
-                        <img src="${homeLogo}" alt="${homeTeam}" class="team-logo" onerror="this.onerror=null;this.src='https://via.placeholder.com/25';">
+                        <img src="${homeLogo}" alt="${homeTeam}" class="team-logo" onerror="this.src='https://via.placeholder.com/25';">
                         <span>${homeTeam}</span>
                         <span class="result-score">${result.score}</span>
                         <span>${awayTeam}</span>
-                        <img src="${awayLogo}" alt="${awayTeam}" class="team-logo" onerror="this.onerror=null;this.src='https://via.placeholder.com/25';">
+                        <img src="${awayLogo}" alt="${awayTeam}" class="team-logo" onerror="this.src='https://via.placeholder.com/25';">
                     </div>
                     <div class="result-date">${result.date}</div>
                 `;
+                resultDiv.style.animationDelay = `${index * 0.1}s`;
                 resultDiv.addEventListener('click', () => showFixtureDetails(result, league));
                 resultsList.appendChild(resultDiv);
             });
@@ -504,6 +542,137 @@ async function loadResults(league, prefix) {
     }
 }
 
+// Load highlights data
+async function loadHighlights(league) {
+    const highlightsList = document.getElementById('highlights-list');
+    const highlightsLoading = document.getElementById('highlights-loading');
+    const highlightsError = document.getElementById('highlights-error');
+    const teamGrid = document.getElementById('team-grid');
+    
+    try {
+        highlightsLoading.style.display = 'block';
+        highlightsList.innerHTML = '';
+        highlightsError.style.display = 'none';
+        teamGrid.innerHTML = '';
+        
+        // Fetch highlights
+        const highlightsResponse = await fetch(`/api/${league}/highlights`);
+        if (!highlightsResponse.ok) throw new Error(`HTTP error! status: ${highlightsResponse.status}`);
+        const highlightsResult = await highlightsResponse.json();
+        if (highlightsResult.error) throw new Error(highlightsResult.error);
+        
+        if (highlightsResult.data.length === 0) {
+            highlightsList.innerHTML = '<div class="status">No highlights available.</div>';
+        } else {
+            highlightsResult.data.forEach((highlight, index) => {
+                const videoDiv = document.createElement('div');
+                videoDiv.className = 'video-item';
+                videoDiv.style.animationDelay = `${index * 0.1}s`;
+                videoDiv.innerHTML = `
+                    <iframe src="${highlight.video_url}" frameborder="0" allowfullscreen></iframe>
+                    <div class="video-info">
+                        <h3>${highlight.title}</h3>
+                        <p>${highlight.date}</p>
+                    </div>
+                `;
+                highlightsList.appendChild(videoDiv);
+            });
+        }
+        
+        // Fetch teams for selector
+        const teamsResponse = await fetch(`/api/${league}/teams`);
+        if (!teamsResponse.ok) throw new Error(`HTTP error! status: ${teamsResponse.status}`);
+        const teamsResult = await teamsResponse.json();
+        if (teamsResult.error) throw new Error(teamsResult.error);
+        
+        teamsResult.data.forEach((team, index) => {
+            const normalizedTeam = normalizeTeamName(team);
+            const logo = teamLogos[normalizedTeam] || 'https://via.placeholder.com/60';
+            const teamDiv = document.createElement('div');
+            teamDiv.className = 'team-icon';
+            teamDiv.style = `--index: ${index};`;
+            teamDiv.innerHTML = `<img src="${logo}" alt="${team}" class="team-icon" onerror="this.src='https://via.placeholder.com/60';">`;
+            teamDiv.addEventListener('click', () => showTeamHighlightsDashboard(normalizedTeam, league));
+            teamGrid.appendChild(teamDiv);
+        });
+        
+        highlightsLoading.style.display = 'none';
+    } catch (error) {
+        console.error(`Error loading ${league} highlights:`, error);
+        highlightsLoading.style.display = 'none';
+        highlightsError.textContent = `Failed to load highlights: ${error.message}`;
+        highlightsError.style.display = 'block';
+    }
+}
+
+// Load team highlights
+async function loadTeamHighlights(team, league) {
+    const teamLogo = document.getElementById('team-logo');
+    const teamName = document.getElementById('team-name');
+    const teamNameTagline = document.getElementById('team-name-tagline');
+    const featuredVideo = document.getElementById('featured-video');
+    const teamHighlightsList = document.getElementById('team-highlights-list');
+    const featuredLoading = document.getElementById('featured-video-loading');
+    const featuredError = document.getElementById('featured-video-error');
+    const highlightsLoading = document.getElementById('team-highlights-loading');
+    const highlightsError = document.getElementById('team-highlights-error');
+    
+    const normalizedTeam = normalizeTeamName(team);
+    teamLogo.src = teamLogos[normalizedTeam] || 'https://via.placeholder.com/40';
+    teamName.textContent = normalizedTeam;
+    teamNameTagline.textContent = normalizedTeam;
+    
+    try {
+        featuredLoading.style.display = 'block';
+        highlightsLoading.style.display = 'block';
+        featuredVideo.innerHTML = '';
+        teamHighlightsList.innerHTML = '';
+        featuredError.style.display = 'none';
+        highlightsError.style.display = 'none';
+        
+        const response = await fetch(`/api/${league}/team-highlights?team=${encodeURIComponent(normalizedTeam)}`);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        
+        const result = await response.json();
+        if (result.error) throw new Error(result.error);
+        
+        if (result.data.length === 0) {
+            featuredVideo.innerHTML = '<div class="status">No featured video available.</div>';
+            teamHighlightsList.innerHTML = '<div class="status">No highlights available.</div>';
+        } else {
+            const featured = result.data[0];
+            featuredVideo.innerHTML = `
+                <iframe src="${featured.video_url}" frameborder="0" allowfullscreen></iframe>
+            `;
+            
+            result.data.slice(1).forEach((highlight, index) => {
+                const videoDiv = document.createElement('div');
+                videoDiv.className = 'video-item';
+                videoDiv.style.animationDelay = `${index * 0.1}s`;
+                videoDiv.innerHTML = `
+                    <iframe src="${highlight.video_url}" frameborder="0" allowfullscreen></iframe>
+                    <div class="video-info">
+                        <h3>${highlight.title}</h3>
+                        <p>${highlight.date}</p>
+                    </div>
+                `;
+                teamHighlightsList.appendChild(videoDiv);
+            });
+        }
+        
+        featuredLoading.style.display = 'none';
+        highlightsLoading.style.display = 'none';
+    } catch (error) {
+        console.error(`Error loading highlights for ${normalizedTeam}:`, error);
+        featuredLoading.style.display = 'none';
+        highlightsLoading.style.display = 'none';
+        featuredError.textContent = `Failed to load featured video: ${error.message}`;
+        highlightsError.textContent = `Failed to load highlights: ${error.message}`;
+        featuredError.style.display = 'block';
+        highlightsError.style.display = 'block';
+    }
+}
+
 // Show fixture details in modal
 async function showFixtureDetails(fixture, league) {
     const modal = document.getElementById('fixture-modal');
@@ -514,12 +683,15 @@ async function showFixtureDetails(fixture, league) {
     const homeLogo = teamLogos[normalizedHomeTeam] || 'https://via.placeholder.com/25';
     const awayLogo = teamLogos[normalizedAwayTeam] || 'https://via.placeholder.com/25';
     const leagueLogo = leagueLogos[league] || '';
+    const homeStadium = STADIUMS[normalizedHomeTeam] || 'TBC';
+    const awayStadium = STADIUMS[normalizedAwayTeam] || 'TBC';
 
     modalContent.innerHTML = `
         <h2>
             <img src="${homeLogo}" alt="${homeTeam}" class="team-logo">
             ${homeTeam} vs ${awayTeam}
             <img src="${awayLogo}" alt="${awayTeam}" class="team-logo">
+            ${leagueLogo ? `<img src="${leagueLogo}" alt="${league}" class="league-logo" style="width: 30px; height: 30px;">` : ''}
         </h2>
         <div class="detail-row">
             <span class="detail-icon"><i class="far fa-calendar-alt"></i></span>
@@ -527,7 +699,7 @@ async function showFixtureDetails(fixture, league) {
         </div>
         <div class="detail-row">
             <span class="detail-icon"><i class="fas fa-map-marker-alt"></i></span>
-            <span class="detail-text"><strong>Venue:</strong> ${STADIUMS[normalizedHomeTeam] || 'TBC'}</span>
+            <span class="detail-text"><strong>Venue:</strong> ${homeStadium}</span>
         </div>
         ${fixture.score ? `
             <div class="detail-row">
@@ -552,6 +724,8 @@ async function showFixtureDetails(fixture, league) {
         <div class="highlights-section">
             <h3>Match Highlights</h3>
             <div class="highlight-placeholder">Video highlights coming soon...</div>
+            <button class="team-highlights-btn" onclick="showTeamHighlightsDashboard('${normalizedHomeTeam}', '${league}')">View ${homeTeam} Highlights</button>
+            <button class="team-highlights-btn" onclick="showTeamHighlightsDashboard('${normalizedAwayTeam}', '${league}')">View ${awayTeam} Highlights</button>
         </div>
     `;
 
@@ -568,10 +742,10 @@ async function showFixtureDetails(fixture, league) {
         const awayPlayers = modalContent.querySelector('.team-lineups .players:last-child');
 
         homePlayers.innerHTML = result.data.home_team.length > 0
-            ? result.data.home_team.map(player => `<li>${player}</li>`).join('')
+            ? result.data.home_team.map((player, index) => `<li style="animation-delay: ${index * 0.05}s">${player}</li>`).join('')
             : '<li>No lineup available</li>';
         awayPlayers.innerHTML = result.data.away_team.length > 0
-            ? result.data.away_team.map(player => `<li>${player}</li>`).join('')
+            ? result.data.away_team.map((player, index) => `<li style="animation-delay: ${index * 0.05}s">${player}</li>`).join('')
             : '<li>No lineup available</li>';
     } catch (error) {
         console.error(`Error loading lineups for ${fixture.teams}:`, error);
@@ -629,6 +803,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Add click event listeners to highlights dropdown
+    document.querySelectorAll('.dropdown-menu a').forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            const league = item.getAttribute('data-league');
+            showHighlightsDashboard(league);
+        });
+    });
+
     // Hamburger menu toggle
     const hamburger = document.querySelector('.hamburger input');
     const navMenu = document.querySelector('.nav-menu');
@@ -636,7 +819,7 @@ document.addEventListener('DOMContentLoaded', () => {
         navMenu.classList.toggle('active');
     });
 
-    // Theme toggle - Updated for new toggle button
+    // Theme toggle
     const themeToggle = document.getElementById('toggle');
     themeToggle.addEventListener('change', () => {
         document.body.classList.toggle('light-mode', themeToggle.checked);
