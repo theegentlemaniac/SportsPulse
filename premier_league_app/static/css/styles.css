@@ -144,13 +144,14 @@ body {
     padding: 10px 0;
     min-width: 150px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-    z-index: 1000;
+    z-index: 1001;
     opacity: 0;
     transform: translateY(-10px);
     transition: all 0.3s ease;
 }
 
-.dropdown:hover .dropdown-menu {
+.dropdown:hover .dropdown-menu,
+.dropdown.active .dropdown-menu {
     display: block;
     opacity: 1;
     transform: translateY(0);
@@ -181,10 +182,11 @@ body {
 #theme-toggle-button {
     position: relative;
     display: inline-block;
-    width: 50px;
-    height: 25px;
+    width: 60px;
+    height: 30px;
     cursor: pointer;
     margin: 0;
+    margin-top: -5px;
 }
 
 #toggle {
@@ -194,16 +196,16 @@ body {
 }
 
 #theme-toggle-button svg {
-    width: 50px;
-    height: 25px;
+    width: 60px;
+    height: 30px;
     vertical-align: middle;
 }
 
 #theme-toggle-button #container {
     fill: #83cbd8;
-    rx: 12.5;
-    height: 25px;
-    width: 50px;
+    rx: 15;
+    height: 30px;
+    width: 60px;
 }
 
 #theme-toggle-button #button {
@@ -211,30 +213,30 @@ body {
 }
 
 #theme-toggle-button #sun-outer-2 {
-    r: 10;
-    transform: translate(5px, 5px);
+    r: 12;
+    transform: translate(6px, 6px);
 }
 
 #theme-toggle-button #sun-3 {
-    transform: translate(9px, 9px);
+    transform: translate(10px, 10px);
 }
 
 #theme-toggle-button #sun-inner {
-    r: 5;
-    transform: translate(8px, 8px);
+    r: 6;
+    transform: translate(9px, 9px);
 }
 
 #theme-toggle-button #moon-3 {
-    r: 10;
-    transform: translate(30px, 5px);
+    r: 12;
+    transform: translate(36px, 6px);
 }
 
 #theme-toggle-button #cloud {
-    transform: scale(0.6) translate(-12px, -2px);
+    transform: scale(0.7) translate(-14px, -2px);
 }
 
 #theme-toggle-button #stars {
-    transform: scale(0.8) translate(2px, 1px);
+    transform: scale(0.9) translate(2px, 1px);
 }
 
 #toggle:checked + svg #container {
@@ -242,7 +244,7 @@ body {
 }
 
 #toggle:checked + svg #button {
-    transform: translate(28px, 2px);
+    transform: translate(32px, 2px);
 }
 
 /* Hamburger Menu */
@@ -610,6 +612,7 @@ h1 {
     white-space: nowrap;
     padding: 20px 0;
     position: relative;
+    scroll-snap-type: x mandatory;
 }
 
 .video-list {
@@ -627,11 +630,27 @@ h1 {
     transition: all 0.4s ease;
     position: relative;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    scroll-snap-align: start;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInSlide 0.6s ease forwards;
+    animation-delay: calc(var(--index) * 0.1s);
+}
+
+@keyframes fadeInSlide {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .video-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 30px rgba(var(--primary-color), 0.3);
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 12px 30px rgba(var(--primary-color), 0.5);
+    animation: pulseGlow 1.5s infinite ease-in-out;
+}
+
+@keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 12px 30px rgba(var(--primary-color), 0.5); }
+    50% { box-shadow: 0 12px 40px rgba(var(--primary-color), 0.7); }
 }
 
 .video-item iframe {
@@ -660,38 +679,72 @@ h1 {
 .team-selector {
     margin-top: 30px;
     text-align: center;
+    background: var(--card-bg);
+    border-radius: 15px;
+    padding: 30px;
+    position: relative;
+    overflow: hidden;
+}
+
+.team-selector h2 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid rgba(var(--primary-color), 0.3);
+}
+
+.team-selector::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: radial-gradient(circle, rgba(var(--primary-color), 0.3), transparent);
+    transform: translate(-50%, -50%);
+    transition: all 0.8s ease;
+}
+
+.team-selector:hover::before {
+    width: 200%;
+    height: 200%;
 }
 
 .team-grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 15px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 20px;
     padding: 20px 0;
+    justify-items: center;
 }
 
 .team-icon {
-    width: 60px;
-    height: 60px;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
     object-fit: contain;
     transition: all 0.4s ease;
     cursor: pointer;
     position: relative;
-    animation: popIn 0.5s ease forwards;
+    animation: bounceIn 0.6s ease forwards;
     animation-delay: calc(var(--index) * 0.05s);
 }
 
-@keyframes popIn {
-    0% { transform: scale(0); opacity: 0; }
-    70% { transform: scale(1.2); opacity: 1; }
-    100% { transform: scale(1); }
+.team-icon:hover {
+    transform: scale(1.3) rotate(360deg);
+    box-shadow: 0 8px 20px rgba(var(--primary-color), 0.6);
+    border: 3px solid var(--primary-color);
 }
 
-.team-icon:hover {
-    transform: scale(1.2) rotate(10deg);
-    box-shadow: 0 8px 20px rgba(var(--primary-color), 0.5);
-    border: 2px solid var(--primary-color);
+@keyframes bounceIn {
+    0% { transform: scale(0); opacity: 0; }
+    60% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1); }
 }
 
 /* Team Highlights Dashboard */
@@ -871,7 +924,9 @@ tr:hover {
     height: 28px;
     object-fit: contain;
     border-radius: 50%;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 8-вторых
+
+px rgba(0, 0, 0, 0.2);
 }
 
 .fixtures-container, .results-container {
@@ -910,7 +965,7 @@ tr:hover {
     transition: left 0.6s ease;
 }
 
-.fixture:hover::before, .result::before {
+.fixture:hover::before, .result:hover::before {
     left: 100%;
 }
 
@@ -1187,8 +1242,13 @@ tr:hover {
         display: block;
     }
 
-    .dashboard-grid, .sports-grid, .team-grid {
+    .dashboard-grid, .sports-grid {
         grid-template-columns: 1fr;
+    }
+
+    .team-grid {
+        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+        gap: 15px;
     }
 
     .card {
@@ -1209,9 +1269,14 @@ tr:hover {
         grid-template-columns: 1fr;
     }
 
-    .sport-icon, .team-icon {
+    .sport-icon {
         width: 40px;
         height: 40px;
+    }
+
+    .team-icon {
+        width: 60px;
+        height: 60px;
     }
 
     .team-tooltip {
@@ -1227,13 +1292,59 @@ tr:hover {
         height: 200px;
     }
 
+    .team-selector h2 {
+        font-size: 1.5rem;
+    }
+
     #theme-toggle-button {
         margin-left: 5px;
-        width: 40px;
+        width: 48px;
+        height: 24px;
     }
-    
+
     #theme-toggle-button svg {
-        width: 40px;
-        height: 20px;
+        width: 48px;
+        height: 24px;
+    }
+
+    #theme-toggle-button #container {
+        height: 24px;
+        width: 48px;
+        rx: 12;
+    }
+
+    #theme-toggle-button #button {
+        transform: translate(1.6px, 1.6px);
+    }
+
+    #theme-toggle-button #sun-outer-2 {
+        r: 9.6;
+        transform: translate(4.8px, 4.8px);
+    }
+
+    #theme-toggle-button #sun-3 {
+        transform: translate(8px, 8px);
+    }
+
+    #theme-toggle-button #sun-inner {
+        r: 4.8;
+        transform: translate(7.2px, 7.2px);
+    }
+
+    #theme-toggle-button #moon-3 {
+        r: 9.6;
+        transform: translate(28.8px, 4.8px);
+    }
+
+    #theme-toggle-button #cloud {
+        transform: scale(0.56) translate(-11.2px, -1.6px);
+    }
+
+    #theme-toggle-button #stars {
+        transform: scale(0.72) translate(1.6px, 0.8px);
+    }
+
+    #toggle:checked + svg #button {
+        transform: translate(25.6px, 1.6px);
     }
 }
