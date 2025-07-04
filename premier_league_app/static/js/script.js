@@ -21,9 +21,6 @@ const teamLogos = {
     "Tottenham Hotspur": "https://images.fotmob.com/image_resources/logo/teamlogo/8586_small.png",
     "West Ham United": "https://images.fotmob.com/image_resources/logo/teamlogo/8654_small.png",
     "Wolverhampton Wanderers": "https://images.fotmob.com/image_resources/logo/teamlogo/8603_small.png",
-    "Burnley": "https://images.fotmob.com/image_resources/logo/teamlogo/8191_small.png",
-    "Sunderland": "https://images.fotmob.com/image_resources/logo/teamlogo/8472_small.png",
-    "Leeds United": "https://images.fotmob.com/image_resources/logo/teamlogo/8463_small.png",
     // La Liga
     "Real Madrid": "https://images.fotmob.com/image_resources/logo/teamlogo/8633_small.png",
     "Barcelona": "https://images.fotmob.com/image_resources/logo/teamlogo/8634_small.png",
@@ -252,6 +249,29 @@ const leagueLogos = {
     'bundesliga': 'https://www.bundesliga.com/assets/logo-bundesliga.svg'
 };
 
+// League teams mapping to ensure 20 teams per league
+const leagueTeams = {
+    'premier-league': [
+        "Arsenal", "Aston Villa", "Bournemouth", "Brentford", "Brighton & Hove Albion",
+        "Chelsea", "Crystal Palace", "Everton", "Fulham", "Ipswich Town",
+        "Leicester City", "Liverpool", "Manchester City", "Manchester United",
+        "Newcastle United", "Nottingham Forest", "Southampton", "Tottenham Hotspur",
+        "West Ham United", "Wolverhampton Wanderers"
+    ],
+    'la-liga': [
+        "Real Madrid", "Barcelona", "Atlético Madrid", "Villarreal", "Athletic Bilbao",
+        "Real Betis", "Osasuna", "Valencia", "Sevilla", "Celta Vigo",
+        "Real Sociedad", "Girona", "Rayo Vallecano", "Mallorca", "Alavés",
+        "Espanyol", "Getafe", "Real Valladolid", "Leganés", "Las Palmas"
+    ],
+    'bundesliga': [
+        "Bayern Munich", "Borussia Dortmund", "RB Leipzig", "Bayer Leverkusen",
+        "Eintracht Frankfurt", "VfB Stuttgart", "Borussia Mönchengladbach", "Wolfsburg",
+        "Werder Bremen", "Freiburg", "Augsburg", "Hoffenheim", "Mainz 05",
+        "Union Berlin", "Heidenheim", "Bochum", "St. Pauli", "Holstein Kiel"
+    ]
+};
+
 // Function to normalize team names with debug
 function normalizeTeamName(teamName) {
     const nameMap = {
@@ -301,6 +321,16 @@ function hideLoader() {
     }, 1000);
 }
 
+// Close mobile menu
+function closeMobileMenu() {
+    const hamburger = document.querySelector('.hamburger input');
+    const navMenu = document.querySelector('.nav-menu');
+    if (window.innerWidth <= 768) {
+        hamburger.checked = false;
+        navMenu.classList.remove('active');
+    }
+}
+
 // Show sports selection
 function showSportsSelection() {
     ['premierLeagueDashboard', 'laLigaDashboard', 'bundesligaDashboard', 'highlightsDashboard', 'teamHighlightsDashboard'].forEach(id => {
@@ -309,6 +339,7 @@ function showSportsSelection() {
         setTimeout(() => { dashboard.style.display = 'none'; }, 800);
     });
     document.getElementById('sportsSelection').style.display = 'block';
+    closeMobileMenu();
 }
 
 // Show league dashboard
@@ -324,6 +355,7 @@ function showLeagueDashboard(leagueId) {
         else if (leagueId === 'laLigaDashboard') loadLaLigaData();
         else if (leagueId === 'bundesligaDashboard') loadBundesligaData();
     }, 50);
+    closeMobileMenu();
 }
 
 // Show highlights dashboard
@@ -340,6 +372,7 @@ function showHighlightsDashboard(league) {
         highlightsDashboard.classList.add('visible');
         loadHighlights(league);
     }, 50);
+    closeMobileMenu();
 }
 
 // Show team highlights dashboard
@@ -356,6 +389,7 @@ function showTeamHighlightsDashboard(team, league) {
         teamHighlightsDashboard.classList.add('visible');
         loadTeamHighlights(team, league);
     }, 50);
+    closeMobileMenu();
 }
 
 // Load league table data with debug
@@ -390,10 +424,10 @@ async function loadTable(league, prefix) {
         result.data.forEach((team, index) => {
             const row = document.createElement('tr');
             const normalizedTeam = normalizeTeamName(team.team);
-            const logo = teamLogos[normalizedTeam] || 'https://via.placeholder.com/25';
+            const logo = teamLogos[normalizedTeam];
             const fact = TEAM_FACTS[normalizedTeam] || 'Interesting facts about this team coming soon';
             
-            if (!teamLogos[normalizedTeam]) {
+            if (!logo) {
                 console.error(`No logo found for team: ${normalizedTeam}`);
             }
             
@@ -454,11 +488,11 @@ async function loadFixtures(league, prefix) {
                 const [homeTeam, awayTeam] = fixture.teams.split(' vs ');
                 const normalizedHomeTeam = normalizeTeamName(homeTeam);
                 const normalizedAwayTeam = normalizeTeamName(awayTeam);
-                const homeLogo = teamLogos[normalizedHomeTeam] || 'https://via.placeholder.com/25';
-                const awayLogo = teamLogos[normalizedAwayTeam] || 'https://via.placeholder.com/25';
+                const homeLogo = teamLogos[normalizedHomeTeam];
+                const awayLogo = teamLogos[normalizedAwayTeam];
                 
-                if (!teamLogos[normalizedHomeTeam]) console.error(`No logo for home team: ${normalizedHomeTeam}`);
-                if (!teamLogos[normalizedAwayTeam]) console.error(`No logo for away team: ${normalizedAwayTeam}`);
+                if (!homeLogo) console.error(`No logo for home team: ${normalizedHomeTeam}`);
+                if (!awayLogo) console.error(`No logo for away team: ${normalizedAwayTeam}`);
                 
                 fixtureDiv.innerHTML = `
                     <div class="fixture-teams">
@@ -511,11 +545,11 @@ async function loadResults(league, prefix) {
                 const [homeTeam, awayTeam] = result.teams.split(' vs ');
                 const normalizedHomeTeam = normalizeTeamName(homeTeam);
                 const normalizedAwayTeam = normalizeTeamName(awayTeam);
-                const homeLogo = teamLogos[normalizedHomeTeam] || 'https://via.placeholder.com/25';
-                const awayLogo = teamLogos[normalizedAwayTeam] || 'https://via.placeholder.com/25';
+                const homeLogo = teamLogos[normalizedHomeTeam];
+                const awayLogo = teamLogos[normalizedAwayTeam];
                 
-                if (!teamLogos[normalizedHomeTeam]) console.error(`No logo for home team: ${normalizedHomeTeam}`);
-                if (!teamLogos[normalizedAwayTeam]) console.error(`No logo for away team: ${normalizedAwayTeam}`);
+                if (!homeLogo) console.error(`No logo for home team: ${normalizedHomeTeam}`);
+                if (!awayLogo) console.error(`No logo for away team: ${normalizedAwayTeam}`);
                 
                 resultDiv.innerHTML = `
                     <div class="result-teams">
@@ -567,7 +601,7 @@ async function loadHighlights(league) {
             highlightsResult.data.forEach((highlight, index) => {
                 const videoDiv = document.createElement('div');
                 videoDiv.className = 'video-item';
-                videoDiv.style.animationDelay = `${index * 0.1}s`;
+                videoDiv.style = `--index: ${index};`;
                 videoDiv.innerHTML = `
                     <iframe src="${highlight.video_url}" frameborder="0" allowfullscreen></iframe>
                     <div class="video-info">
@@ -579,21 +613,30 @@ async function loadHighlights(league) {
             });
         }
         
-        // Fetch teams for selector
-        const teamsResponse = await fetch(`/api/${league}/teams`);
-        if (!teamsResponse.ok) throw new Error(`HTTP error! status: ${teamsResponse.status}`);
-        const teamsResult = await teamsResponse.json();
-        if (teamsResult.error) throw new Error(teamsResult.error);
+        // Use predefined league teams instead of API
+        const teams = leagueTeams[league] || [];
+        if (teams.length !== 20) {
+            console.warn(`Expected 20 teams for ${league}, but found ${teams.length}`);
+        }
         
-        teamsResult.data.forEach((team, index) => {
+        teams.forEach((team, index) => {
             const normalizedTeam = normalizeTeamName(team);
-            const logo = teamLogos[normalizedTeam] || 'https://via.placeholder.com/60';
-            const teamDiv = document.createElement('div');
-            teamDiv.className = 'team-icon';
-            teamDiv.style = `--index: ${index};`;
-            teamDiv.innerHTML = `<img src="${logo}" alt="${team}" class="team-icon" onerror="this.src='https://via.placeholder.com/60';">`;
-            teamDiv.addEventListener('click', () => showTeamHighlightsDashboard(normalizedTeam, league));
-            teamGrid.appendChild(teamDiv);
+            const logo = teamLogos[normalizedTeam];
+            if (!logo) {
+                console.error(`No logo found for team: ${normalizedTeam} in ${league}`);
+                return; // Skip if no logo to avoid rendering issues
+            }
+            const teamImg = document.createElement('img');
+            teamImg.src = logo;
+            teamImg.alt = `${normalizedTeam} Logo`;
+            teamImg.className = 'team-icon';
+            teamImg.style.setProperty('--index', index);
+            teamImg.onerror = () => {
+                console.error(`Failed to load logo for ${normalizedTeam}: ${logo}`);
+                teamImg.src = 'https://via.placeholder.com/80'; // Fallback only on load failure
+            };
+            teamImg.addEventListener('click', () => showTeamHighlightsDashboard(normalizedTeam, league));
+            teamGrid.appendChild(teamImg);
         });
         
         highlightsLoading.style.display = 'none';
@@ -618,7 +661,15 @@ async function loadTeamHighlights(team, league) {
     const highlightsError = document.getElementById('team-highlights-error');
     
     const normalizedTeam = normalizeTeamName(team);
-    teamLogo.src = teamLogos[normalizedTeam] || 'https://via.placeholder.com/40';
+    const logo = teamLogos[normalizedTeam];
+    if (!logo) {
+        console.error(`No logo found for team: ${normalizedTeam}`);
+    }
+    teamLogo.src = logo;
+    teamLogo.onerror = () => {
+        console.error(`Failed to load logo for ${normalizedTeam}: ${logo}`);
+        teamLogo.src = 'https://via.placeholder.com/80';
+    };
     teamName.textContent = normalizedTeam;
     teamNameTagline.textContent = normalizedTeam;
     
@@ -648,7 +699,7 @@ async function loadTeamHighlights(team, league) {
             result.data.slice(1).forEach((highlight, index) => {
                 const videoDiv = document.createElement('div');
                 videoDiv.className = 'video-item';
-                videoDiv.style.animationDelay = `${index * 0.1}s`;
+                videoDiv.style = `--index: ${index};`;
                 videoDiv.innerHTML = `
                     <iframe src="${highlight.video_url}" frameborder="0" allowfullscreen></iframe>
                     <div class="video-info">
@@ -680,17 +731,17 @@ async function showFixtureDetails(fixture, league) {
     const [homeTeam, awayTeam] = fixture.teams.split(' vs ');
     const normalizedHomeTeam = normalizeTeamName(homeTeam);
     const normalizedAwayTeam = normalizeTeamName(awayTeam);
-    const homeLogo = teamLogos[normalizedHomeTeam] || 'https://via.placeholder.com/25';
-    const awayLogo = teamLogos[normalizedAwayTeam] || 'https://via.placeholder.com/25';
+    const homeLogo = teamLogos[normalizedHomeTeam];
+    const awayLogo = teamLogos[normalizedAwayTeam];
     const leagueLogo = leagueLogos[league] || '';
     const homeStadium = STADIUMS[normalizedHomeTeam] || 'TBC';
     const awayStadium = STADIUMS[normalizedAwayTeam] || 'TBC';
 
     modalContent.innerHTML = `
         <h2>
-            <img src="${homeLogo}" alt="${homeTeam}" class="team-logo">
+            <img src="${homeLogo}" alt="${homeTeam}" class="team-logo" onerror="this.src='https://via.placeholder.com/25';">
             ${homeTeam} vs ${awayTeam}
-            <img src="${awayLogo}" alt="${awayTeam}" class="team-logo">
+            <img src="${awayLogo}" alt="${awayTeam}" class="team-logo" onerror="this.src='https://via.placeholder.com/25';">
             ${leagueLogo ? `<img src="${leagueLogo}" alt="${league}" class="league-logo" style="width: 30px; height: 30px;">` : ''}
         </h2>
         <div class="detail-row">
@@ -709,13 +760,13 @@ async function showFixtureDetails(fixture, league) {
         ` : ''}
         <div class="team-lineups">
             <div>
-                <h3><img src="${homeLogo}" alt="${homeTeam}" class="team-logo"> ${homeTeam}</h3>
+                <h3><img src="${homeLogo}" alt="${homeTeam}" class="team-logo" onerror="this.src='https://via.placeholder.com/25';"> ${homeTeam}</h3>
                 <ul class="players">
                     <li>Loading lineup...</li>
                 </ul>
             </div>
             <div>
-                <h3><img src="${awayLogo}" alt="${awayTeam}" class="team-logo"> ${awayTeam}</h3>
+                <h3><img src="${awayLogo}" alt="${awayTeam}" class="team-logo" onerror="this.src='https://via.placeholder.com/25';"> ${awayTeam}</h3>
                 <ul class="players">
                     <li>Loading lineup...</li>
                 </ul>
@@ -730,6 +781,7 @@ async function showFixtureDetails(fixture, league) {
     `;
 
     modal.style.display = 'block';
+    closeMobileMenu();
 
     // Fetch lineups
     try {
@@ -759,6 +811,7 @@ async function showFixtureDetails(fixture, league) {
 function closeModal() {
     const modal = document.getElementById('fixture-modal');
     modal.style.display = 'none';
+    closeMobileMenu();
 }
 
 // Load Premier League data
@@ -812,11 +865,37 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Hamburger menu toggle
-    const hamburger = document.querySelector('.hamburger input');
+    // Add click event listeners to other nav items
+    document.querySelectorAll('.navbar-item a:not(.dropdown-toggle)').forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            closeMobileMenu();
+            // Add navigation logic here if needed
+        });
+    });
+
+    // Hamburger menu toggle and visibility
+    const hamburger = document.querySelector('.hamburger');
+    const hamburgerInput = document.querySelector('.hamburger input');
     const navMenu = document.querySelector('.nav-menu');
-    hamburger.addEventListener('change', () => {
-        navMenu.classList.toggle('active');
+
+    function toggleHamburgerVisibility() {
+        if (window.innerWidth <= 768) {
+            hamburger.style.display = 'block';
+        } else {
+            hamburger.style.display = 'none';
+            navMenu.classList.remove('active');
+            hamburgerInput.checked = false;
+        }
+    }
+
+    toggleHamburgerVisibility(); // Initial check
+    window.addEventListener('resize', toggleHamburgerVisibility);
+
+    hamburgerInput.addEventListener('change', () => {
+        if (window.innerWidth <= 768) {
+            navMenu.classList.toggle('active');
+        }
     });
 
     // Theme toggle
