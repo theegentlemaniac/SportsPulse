@@ -12,88 +12,8 @@
     <link rel="icon" type="image/png" href="https://via.placeholder.com/32" sizes="32x32">
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="container">
-            <div class="logo" onclick="showSportsSelection()">
-                <i class="fas fa-trophy"></i> SportPulse
-            </div>
-            <ul class="nav-menu">
-                <li class="navbar-item"><a href="#" onclick="closeMobileMenu()">Stats</a></li>
-                <li class="navbar-item"><a href="#" onclick="closeMobileMenu()">News</a></li>
-                <li class="navbar-item dropdown">
-                    <a href="#" class="dropdown-toggle">Highlights</a>
-                    <div class="dropdown-menu">
-                        <a href="#" data-league="premier-league" onclick="closeMobileMenu()">Premier League</a>
-                        <a href="#" data-league="la-liga" onclick="closeMobileMenu()">La Liga</a>
-                        <a href="#" data-league="bundesliga" onclick="closeMobileMenu()">Bundesliga</a>
-                    </div>
-                </li>
-                <li class="navbar-item"><a href="#" onclick="closeMobileMenu()">Transfers</a></li>
-                <li class="navbar-item"><a href="#" onclick="closeMobileMenu()">Contact</a></li>
-                <li class="navbar-item"><a href="#" onclick="closeMobileMenu()">About</a></li>
-            </ul>
-            <div class="nav-controls">
-                <label id="theme-toggle-button">
-                    <input type="checkbox" id="toggle">
-                    <svg viewBox="0 0 80 48" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
-                        <g transform="translate(4 4)" data-name="Component 15 – 1" id="Component_15_1">
-                            <g filter="url(#container)" transform="matrix(1, 0, 0, 1, -4, -4)">
-                                <rect fill="#83cbd8" transform="translate(4 4)" rx="20" height="40" width="72" data-name="container" id="container"></rect>
-                            </g>
-                            <g transform="translate(2.667 2.667)" id="button">
-                                <g data-name="sun" id="sun">
-                                    <g filter="url(#sun-outer)" transform="matrix(1, 0, 0, 1, -6.67, -6.67)">
-                                        <circle fill="#f8e664" transform="translate(6.67 6.67)" r="17.333" cy="17.333" cx="17.333" data-name="sun-outer" id="sun-outer-2"></circle>
-                                    </g>
-                                    <g filter="url(#sun)" transform="matrix(1, 0, 0, 1, -6.67, -6.67)">
-                                        <path fill="rgba(246,254,247,0.29)" transform="translate(10.67 10.67)" d="M13.333,0A13.333,13.333,0,1,1,0,13.333,13.333,13.333,0,0,1,13.333,0Z" data-name="sun" id="sun-3"></path>
-                                    </g>
-                                    <circle fill="#fcf4b9" transform="translate(9.333 9.333)" r="8" cy="8" cx="8" id="sun-inner"></circle>
-                                </g>
-                                <g data-name="moon" id="moon">
-                                    <g filter="url(#moon)" transform="matrix(1, 0, 0, 1, -36, -6.67)">
-                                        <circle fill="#cce6ee" transform="translate(36 6.67)" r="17.333" cy="17.333" cx="17.333" data-name="moon" id="moon-3"></circle>
-                                    </g>
-                                    <g fill="#a6cad0" transform="translate(-27.905 -1.152)" id="patches">
-                                        <circle transform="translate(49.152 5.138)" r="2.286" cy="2.286" cx="2.286"></circle>
-                                        <circle transform="translate(45 20.517)" r="2.286" cy="2.286" cx="2.286" data-name="patch"></circle>
-                                        <circle transform="translate(37.732 9.193)" r="1.143" cy="1.143" cx="1.143" data-name="patch"></circle>
-                                        <circle transform="translate(58.378 21.587)" r="1.143" cy="1.143" cx="1.143" data-name="patch"></circle>
-                                        <circle transform="translate(37.732 25.718)" r="1.143" cy="1.143" cx="1.143" data-name="patch"></circle>
-                                        <circle transform="translate(57.235 12.034)" r="1.714" cy="1.714" cx="1.714" data-name="patch"></circle>
-                                    </g>
-                                </g>
-                            </g>
-                            <g filter="url(#cloud)" transform="matrix(1, 0, 0, 1, -4, -4)">
-                                <path fill="#fff" transform="translate(-3466.47 -160.94)" d="M3512.81,173.815a4.463,4.463,0,0,1,2.243.62.95.95,0,0,1,.72-1.281,2.626,2.626,0,0,1,2.278.892c.553.448,1.106,1.992-1.62,2.927a7.742,7.742,0,0,1-3.762-.3c-1.28-.49-1.181-2.65-1.137-2.624s-1.417,2.2-2.623,2.2a4.172,4.172,0,0,1-2.394-1.206,3.825,3.825,0,0,1-2.771.774c-3.429-.46-2.333-3.267-2.2-3.55A3.721,3.721,0,0,1,3512.81,173.815Z" data-name="cloud" id="cloud"></path>
-                            </g>
-                            <g fill="#def8ff" transform="translate(4.104 1.514)" id="stars">
-                                <path transform="matrix(-1, 0.017, -0.017, -1, 27.692, 3.491)" d="M.886,0,.648.639,0,.616.524,1.066.286,1.705l.554-.412.524.45L1.171,1.089,1.725.676,1.078.653Z"></path>
-                                <path transform="matrix(-0.777, 0.629, -0.629, -0.777, 26.497, 14.123)" d="M1.533.604.955.539.841,0,.577.527,0,.458.458.834l-.264.527.691,1.065.458.373L1.028.898Z" data-name="star"></path>
-                                <path transform="matrix(0.438, 0.899, -0.899, 0.438, 26.497, 33.983)" d="M.017,1.217.543,1.028.326.417L.876.884l.526-.188L.851.565.857,0,.55.465,0,.335.326.751Z" data-name="star"></path>
-                                <path transform="translate(14.488 0.444) rotate(104)" d="M1.327,1.829,1.21,1.143,1.799.825,1.1.693.983,0,.701.653,0,.523.51,1.006.229,1.662l.589-.313Z" data-name="star"></path>
-                                <path transform="matrix(-0.07, 0.998, -0.998, -0.07, 12.647, 17.665)" d="M.998,1.884l.13-.709L1.805,1.08,1.177.709,1.308,0,.807.531.18.159.5.8,0,1.336l.677-.095Z" data-name="star"></path>
-                                <path transform="translate(9.515 32.069) rotate(11)" d="M.677,0,.729.827,0,1.123.8.241.051.827.411-.732.8.241L1.534,1.066,1.945.336,1.215.631Z" data-name="star"></path>
-                                <path transform="translate(5.728 6.814) rotate(172)" d="M.933,0,.571.52,0,.356.369.876l-.356.52.589-.246.369.521L.945,1.039,1.534.8,0.959.631Z" data-name="star"></path>
-                                <path transform="translate(2.535 16.704) rotate(169)" d="M1.441,0,.885.653.13.343.557,1.105,0,1.758.832,1.509l.426.757.053-.856.832-.249L1.388.856Z" data-name="star"></path>
-                            </g>
-                        </g>
-                    </svg>
-                </label>
-                <label class="hamburger">
-                    <input type="checkbox">
-                    <svg viewBox="0 0 32 32">
-                        <path class="line line-top-bottom" d="M27 10 13 10C10.8 10 9 8.2 9 6 9 3.5 10.8 2 13 2 15.2 2 17 3.8 17 6L17 26C17 28.2 18.8 30 21 30 23.2 30 25 28.2 25 26 25 23.8 23.2 22 21 22L7 22"></path>
-                        <path class="line" d="M7 16 27 16"></path>
-                    </svg>
-                </label>
-            </div>
-        </div>
-    </nav>
-
     <!-- Loader -->
-    <div class="loader-container" id="loader">
+    <div id="loader" class="loader-container">
         <div class="ball-loader">
             <div class="ball">
                 <div class="inner">
@@ -105,132 +25,127 @@
             </div>
             <div class="shadow"></div>
         </div>
-        <div class="loader-text">Loading SportPulse...</div>
+        <div class="loader-text">SportPulse</div>
     </div>
 
     <!-- Main Content -->
-    <div class="main-content" id="mainContent">
-        <div class="container">
-            <!-- Sports Selection -->
-            <div id="sportsSelection">
-                <header>
-                    <h1><i class="fas fa-trophy"></i> SportPulse</h1>
-                    <p class="tagline">Your ultimate destination for real-time sports updates</p>
-                </header>
-                
-                <div class="sports-grid">
-                    <div class="sport-card" data-sport="premier-league">
-                        <img src="https://upload.wikimedia.org/wikipedia/it/6/6d/Premier_League_Logo_2016.png" alt="Premier League" class="sport-icon">
-                        <h3>Premier League</h3>
-                        <p>Live scores, tables & fixtures</p>
-                    </div>
-                    
-                    <div class="sport-card" data-sport="la-liga">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/54/LaLiga_EA_Sports_2023_Vertical_Logo.svg" alt="La Liga" class="sport-icon">
-                        <h3>La Liga</h3>
-                        <p>Live scores, tables & fixtures</p>
-                    </div>
-                    
-                    <div class="sport-card" data-sport="bundesliga">
-                        <img src="https://upload.wikimedia.org/wikipedia/en/d/df/Bundesliga_logo_%282017%29.svg" alt="Bundesliga" class="sport-icon">
-                        <h3>Bundesliga</h3>
-                        <p>Live scores, tables & fixtures</p>
-                    </div>
-                    
-                    <div class="sport-card disabled" data-sport="ligue-1">
-                        <img src="https://images.fotmob.com/image_resources/logo/leaguelogo/dark/53.png" alt="Ligue 1" class="sport-icon">
-                        <h3>Ligue 1</h3>
-                        <p class="coming-soon">Coming Soon</p>
-                    </div>
-                    
-                    <div class="sport-card disabled" data-sport="serie-a">
-                        <img src="https://images.fotmob.com/image_resources/logo/leaguelogo/dark/55.png" alt="Serie A" class="sport-icon">
-                        <h3>Serie A</h3>
-                        <p class="coming-soon">Coming Soon</p>
-                    </div>
-                    
-                    <div class="sport-card disabled" data-sport="champions-league">
-                        <img src="https://images.fotmob.com/image_resources/logo/leaguelogo/dark/42.png" alt="Champions League" class="sport-icon">
-                        <h3>Champions League</h3>
-                        <p class="coming-soon">Coming Soon</p>
-                    </div>
-                    
-                    <div class="sport-card disabled" data-sport="nba">
-                        <img src="https://cdn.nba.com/logos/leagues/logo-nba.svg" alt="NBA" class="sport-icon">
-                        <h3>NBA</h3>
-                        <p class="coming-soon">Coming Soon</p>
-                    </div>
-                    
-                    <div class="sport-card disabled" data-sport="f1">
-                        <img src="https://www.formula1.com/etc/designs/fom-website/images/f1_logo.svg" alt="Formula 1" class="sport-icon">
-                        <h3>Formula 1</h3>
-                        <p class="coming-soon">Coming Soon</p>
+    <div id="mainContent" class="main-content">
+        <!-- Navbar -->
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo" onclick="showSportsSelection()">
+                    <i class="fas fa-trophy"></i> SportPulse
+                </div>
+                <ul class="nav-menu">
+                    <li class="navbar-item"><a href="#" onclick="closeMobileMenu()">Stats</a></li>
+                    <li class="navbar-item"><a href="#" onclick="closeMobileMenu()">News</a></li>
+                    <li class="navbar-item dropdown">
+                        <a href="#" class="dropdown-toggle">Highlights</a>
+                        <div class="dropdown-menu">
+                            <a href="#" data-league="premier-league" onclick="closeMobileMenu()">Premier League</a>
+                            <a href="#" data-league="la-liga" onclick="closeMobileMenu()">La Liga</a>
+                            <a href="#" data-league="bundesliga" onclick="closeMobileMenu()">Bundesliga</a>
+                        </div>
+                    </li>
+                    <li class="navbar-item"><a href="#" onclick="closeMobileMenu()">Transfers</a></li>
+                    <li class="navbar-item"><a href="#" onclick="closeMobileMenu()">Contact</a></li>
+                    <li class="navbar-item"><a href="#" onclick="closeMobileMenu()">About</a></li>
+                </ul>
+                <div class="nav-controls">
+                    <label id="theme-toggle-button">
+                        <input type="checkbox" id="toggle">
+                        <svg viewBox="0 0 80 48" xmlns="http://www.w3.org/2000/svg">
+                            <g transform="translate(4 4)" data-name="Component 15 – 1" id="Component_15_1">
+                                <g filter="url(#container)">
+                                    <rect fill="#83cbd8" rx="20" height="40" width="72" data-name="container" id="container"></rect>
+                                </g>
+                                <g transform="translate(2 2)" id="button">
+                                    <g filter="url(#button-shadow)">
+                                        <circle cx="14" cy="14" r="14" fill="#fff"></circle>
+                                    </g>
+                                    <g id="sun">
+                                        <circle cx="14" cy="14" r="12" fill="#ffeb3b" id="sun-outer-2"></circle>
+                                        <g id="sun-3">
+                                            <circle cx="4" cy="4" r="4" fill="#fff" id="sun-inner"></circle>
+                                        </g>
+                                    </g>
+                                    <g id="moon-3">
+                                        <circle cx="14" cy="14" r="12" fill="#fff"></circle>
+                                        <circle cx="10" cy="14" r="12" fill="#2b4360"></circle>
+                                    </g>
+                                    <g id="cloud">
+                                        <path d="M14 10a4 4 0 0 0-4 4h-2a4 4 0 0 0 0 8h10a4 4 0 0 0 0-8h-2a4 4 0 0 0-2-4z" fill="#fff"></path>
+                                    </g>
+                                    <g id="stars">
+                                        <path d="M2 2l2 2-2 2-2-2z" fill="#fff"></path>
+                                        <path d="M8 6l1 1-1 1-1-1z" fill="#fff"></path>
+                                        <path d="M4 10l1 1-1 1-1-1z" fill="#fff"></path>
+                                    </g>
+                                </g>
+                            </g>
+                            <defs>
+                                <filter id="container" x="0" y="0" width="80" height="48" filterUnits="userSpaceOnUse">
+                                    <feGaussianBlur in="SourceGraphic" stdDeviation="2"></feGaussianBlur>
+                                </filter>
+                                <filter id="button-shadow" x="0" y="0" width="28" height="28" filterUnits="userSpaceOnUse">
+                                    <feGaussianBlur in="SourceGraphic" stdDeviation="1"></feGaussianBlur>
+                                </filter>
+                            </defs>
+                        </svg>
+                    </label>
+                    <div class="hamburger">
+                        <input type="checkbox">
+                        <svg viewBox="0 0 32 32">
+                            <path class="line line-top-bottom" d="M27 10 13 10"></path>
+                            <path class="line" d="M27 16 13 16"></path>
+                            <path class="line line-top-bottom" d="M27 22 13 22"></path>
+                        </svg>
                     </div>
                 </div>
             </div>
+        </nav>
 
-            <!-- Highlights Dashboard -->
-            <div id="highlightsDashboard" class="league-dashboard" style="display: none;">
-                <header>
-                    <h1><i class="fas fa-video"></i> Highlights</h1>
-                    <p class="tagline">Watch the latest match highlights from top leagues</p>
-                </header>
-                
-                <div class="highlights-container">
-                    <div class="video-scroller">
-                        <div id="highlights-loading" class="loading">Loading highlights...</div>
-                        <div id="highlights-error" class="error" style="display: none;"></div>
-                        <div id="highlights-list" class="video-list"></div>
-                    </div>
-                    
-                    <div class="team-selector">
-                        <h2>Select a Team</h2>
-                        <div class="team-grid" id="team-grid"></div>
-                    </div>
+        <!-- Sports Selection -->
+        <div id="sportsSelection" class="container">
+            <header>
+                <h1>SportPulse</h1>
+                <p class="tagline">Your Ultimate Destination for Live Sports Updates</p>
+            </header>
+            <div class="sports-grid">
+                <div class="sport-card" data-sport="premier-league">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/f/f2/Premier_League_Logo.svg" alt="Premier League" class="sport-icon">
+                    <h3>Premier League</h3>
+                    <p>England's top-tier football league</p>
+                </div>
+                <div class="sport-card" data-sport="la-liga">
+                    <img src="https://www.laliga.com/assets/logo-laliga-blanco.svg" alt="La Liga" class="sport-icon">
+                    <h3>La Liga</h3>
+                    <p>Spain's premier football competition</p>
+                </div>
+                <div class="sport-card" data-sport="bundesliga">
+                    <img src="https://www.bundesliga.com/assets/logo-bundesliga.svg" alt="Bundesliga" class="sport-icon">
+                    <h3>Bundesliga</h3>
+                    <p>Germany's elite football league</p>
+                </div>
+                <div class="sport-card disabled">
+                    <img src="https://via.placeholder.com/50" alt="Coming Soon" class="sport-icon">
+                    <h3>More Sports</h3>
+                    <p class="coming-soon">Coming Soon!</p>
                 </div>
             </div>
+        </div>
 
-            <!-- Team Highlights Dashboard -->
-            <div id="teamHighlightsDashboard" class="league-dashboard" style="display: none;">
-                <header>
-                    <h1><img id="team-logo" src="" alt="Team Logo" style="width: 40px; height: 40px; object-fit: contain;"> <span id="team-name"></span> Highlights</h1>
-                    <p class="tagline">Latest highlights for <span id="team-name-tagline"></span></p>
-                </header>
-                
-                <div class="team-highlights-container">
-                    <div class="featured-video">
-                        <div id="featured-video-loading" class="loading">Loading featured video...</div>
-                        <div id="featured-video-error" class="error" style="display: none;"></div>
-                        <div id="featured-video"></div>
-                    </div>
-                    
-                    <div class="video-scroller">
-                        <div id="team-highlights-loading" class="loading">Loading team highlights...</div>
-                        <div id="team-highlights-error" class="error" style="display: none;"></div>
-                        <div id="team-highlights-list" class="video-list"></div>
-                    </div>
-                </div>
-                
-                <button class="refresh-btn" onclick="loadTeamHighlights()">
-                    <i class="fas fa-sync-alt"></i> Refresh Highlights
-                </button>
-            </div>
-
-            <!-- Premier League Dashboard -->
-            <div id="premierLeagueDashboard" class="league-dashboard">
-                <header>
-                    <h1><img src="https://upload.wikimedia.org/wikipedia/it/6/6d/Premier_League_Logo_2016.png" alt="Premier League" style="width: 40px; height: 40px; object-fit: contain;"> Premier League</h1>
-                    <p class="tagline">Live updates from England's top flight</p>
-                </header>
-                
+        <!-- Premier League Dashboard -->
+        <div id="premierLeagueDashboard" class="league-dashboard">
+            <div class="container">
                 <div class="dashboard-grid">
                     <div class="card">
-                        <h2><i class="fas fa-table"></i> League Table</h2>
-                        <div id="pl-table-status-container"></div>
+                        <h2><i class="fas fa-trophy"></i> League Table</h2>
                         <div class="table-container">
-                            <div id="pl-table-loading" class="loading">Loading table data...</div>
+                            <div id="pl-table-loading" class="loading">Loading table...</div>
                             <div id="pl-table-error" class="error" style="display: none;"></div>
-                            <table id="pl-league-table" style="display: none;">
+                            <div id="pl-table-status-container"></div>
+                            <table id="pl-league-table">
                                 <thead>
                                     <tr>
                                         <th>Pos</th>
@@ -247,18 +162,16 @@
                             </table>
                         </div>
                     </div>
-                    
                     <div class="card">
-                        <h2><i class="far fa-calendar-alt"></i> Upcoming Fixtures</h2>
+                        <h2><i class="fas fa-calendar-alt"></i> Upcoming Fixtures</h2>
                         <div class="fixtures-container">
                             <div id="pl-fixtures-loading" class="loading">Loading fixtures...</div>
                             <div id="pl-fixtures-error" class="error" style="display: none;"></div>
                             <div id="pl-fixtures-list"></div>
                         </div>
                     </div>
-                    
                     <div class="card">
-                        <h2><i class="fas fa-history"></i> Recent Results</h2>
+                        <h2><i class="fas fa-futbol"></i> Recent Results</h2>
                         <div class="results-container">
                             <div id="pl-results-loading" class="loading">Loading results...</div>
                             <div id="pl-results-error" class="error" style="display: none;"></div>
@@ -266,27 +179,21 @@
                         </div>
                     </div>
                 </div>
-                
-                <button class="refresh-btn" onclick="loadPremierLeagueData()">
-                    <i class="fas fa-sync-alt"></i> Refresh Data
-                </button>
+                <button class="refresh-btn" onclick="loadPremierLeagueData()">Refresh Data</button>
             </div>
+        </div>
 
-            <!-- La Liga Dashboard -->
-            <div id="laLigaDashboard" class="league-dashboard">
-                <header>
-                    <h1><img src="https://upload.wikimedia.org/wikipedia/commons/5/54/LaLiga_EA_Sports_2023_Vertical_Logo.svg" alt="La Liga" style="width: 40px; height: 40px; object-fit: contain;"> La Liga</h1>
-                    <p class="tagline">Live updates from Spain's top flight</p>
-                </header>
-                
+        <!-- La Liga Dashboard -->
+        <div id="laLigaDashboard" class="league-dashboard">
+            <div class="container">
                 <div class="dashboard-grid">
                     <div class="card">
-                        <h2><i class="fas fa-table"></i> League Table</h2>
-                        <div id="ll-table-status-container"></div>
+                        <h2><i class="fas fa-trophy"></i> League Table</h2>
                         <div class="table-container">
-                            <div id="ll-table-loading" class="loading">Loading table data...</div>
+                            <div id="ll-table-loading" class="loading">Loading table...</div>
                             <div id="ll-table-error" class="error" style="display: none;"></div>
-                            <table id="ll-league-table" style="display: none;">
+                            <div id="ll-table-status-container"></div>
+                            <table id="ll-league-table">
                                 <thead>
                                     <tr>
                                         <th>Pos</th>
@@ -303,18 +210,16 @@
                             </table>
                         </div>
                     </div>
-                    
                     <div class="card">
-                        <h2><i class="far fa-calendar-alt"></i> Upcoming Fixtures</h2>
+                        <h2><i class="fas fa-calendar-alt"></i> Upcoming Fixtures</h2>
                         <div class="fixtures-container">
                             <div id="ll-fixtures-loading" class="loading">Loading fixtures...</div>
                             <div id="ll-fixtures-error" class="error" style="display: none;"></div>
                             <div id="ll-fixtures-list"></div>
                         </div>
                     </div>
-                    
                     <div class="card">
-                        <h2><i class="fas fa-history"></i> Recent Results</h2>
+                        <h2><i class="fas fa-futbol"></i> Recent Results</h2>
                         <div class="results-container">
                             <div id="ll-results-loading" class="loading">Loading results...</div>
                             <div id="ll-results-error" class="error" style="display: none;"></div>
@@ -322,27 +227,21 @@
                         </div>
                     </div>
                 </div>
-                
-                <button class="refresh-btn" onclick="loadLaLigaData()">
-                    <i class="fas fa-sync-alt"></i> Refresh Data
-                </button>
+                <button class="refresh-btn" onclick="loadLaLigaData()">Refresh Data</button>
             </div>
+        </div>
 
-            <!-- Bundesliga Dashboard -->
-            <div id="bundesligaDashboard" class="league-dashboard">
-                <header>
-                    <h1><img src="https://www.bundesliga.com/assets/logo-bundesliga.svg" alt="Bundesliga" style="width: 40px; height: 40px; object-fit: contain;"> Bundesliga</h1>
-                    <p class="tagline">Live updates from Germany's top flight</p>
-                </header>
-                
+        <!-- Bundesliga Dashboard -->
+        <div id="bundesligaDashboard" class="league-dashboard">
+            <div class="container">
                 <div class="dashboard-grid">
                     <div class="card">
-                        <h2><i class="fas fa-table"></i> League Table</h2>
-                        <div id="bl-table-status-container"></div>
+                        <h2><i class="fas fa-trophy"></i> League Table</h2>
                         <div class="table-container">
-                            <div id="bl-table-loading" class="loading">Loading table data...</div>
+                            <div id="bl-table-loading" class="loading">Loading table...</div>
                             <div id="bl-table-error" class="error" style="display: none;"></div>
-                            <table id="bl-league-table" style="display: none;">
+                            <div id="bl-table-status-container"></div>
+                            <table id="bl-league-table">
                                 <thead>
                                     <tr>
                                         <th>Pos</th>
@@ -359,18 +258,16 @@
                             </table>
                         </div>
                     </div>
-                    
                     <div class="card">
-                        <h2><i class="far fa-calendar-alt"></i> Upcoming Fixtures</h2>
+                        <h2><i class="fas fa-calendar-alt"></i> Upcoming Fixtures</h2>
                         <div class="fixtures-container">
                             <div id="bl-fixtures-loading" class="loading">Loading fixtures...</div>
                             <div id="bl-fixtures-error" class="error" style="display: none;"></div>
                             <div id="bl-fixtures-list"></div>
                         </div>
                     </div>
-                    
                     <div class="card">
-                        <h2><i class="fas fa-history"></i> Recent Results</h2>
+                        <h2><i class="fas fa-futbol"></i> Recent Results</h2>
                         <div class="results-container">
                             <div id="bl-results-loading" class="loading">Loading results...</div>
                             <div id="bl-results-error" class="error" style="display: none;"></div>
@@ -378,20 +275,60 @@
                         </div>
                     </div>
                 </div>
-                
-                <button class="refresh-btn" onclick="loadBundesligaData()">
-                    <i class="fas fa-sync-alt"></i> Refresh Data
-                </button>
+                <button class="refresh-btn" onclick="loadBundesligaData()">Refresh Data</button>
             </div>
         </div>
-    </div>
 
-    <!-- Fixture Modal -->
-    <div id="fixture-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeModal()">×</span>
-            <div class="fixture-details" id="modal-content">
-                <!-- Dynamic content will be inserted here -->
+        <!-- Highlights Dashboard -->
+        <div id="highlightsDashboard" class="league-dashboard">
+            <div class="container">
+                <div class="highlights-container">
+                    <div class="team-selector">
+                        <h2><i class="fas fa-futbol"></i> Select a Team for Highlights</h2>
+                        <div id="team-grid" class="team-grid"></div>
+                    </div>
+                    <div class="video-scroller">
+                        <div id="highlights-loading" class="loading">Loading teams...</div>
+                        <div id="highlights-error" class="error" style="display: none;"></div>
+                        <div id="highlights-list" class="video-list">
+                            <div class="status">Select a team above to view highlights</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Team Highlights Dashboard -->
+        <div id="teamHighlightsDashboard" class="league-dashboard">
+            <div class="container">
+                <div class="team-highlights-container">
+                    <div class="team-selector">
+                        <h2>
+                            <img id="team-logo" src="https://via.placeholder.com/80" alt="Team Logo" class="team-icon">
+                            <span id="team-name">Team Highlights</span>
+                        </h2>
+                    </div>
+                    <div class="video-scroller">
+                        <div id="featured-video" class="featured-video">
+                            <!-- Featured video will be injected here -->
+                        </div>
+                        <div id="featured-video-loading" class="loading">Loading featured video...</div>
+                        <div id="featured-video-error" class="error" style="display: none;"></div>
+                        <div id="team-highlights-list" class="video-list">
+                            <!-- Team highlights will be injected here -->
+                        </div>
+                        <div id="team-highlights-loading" class="loading">Loading highlights...</div>
+                        <div id="team-highlights-error" class="error" style="display: none;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal for Fixtures/Results Details -->
+        <div id="fixture-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-modal" onclick="closeModal()">×</span>
+                <div id="modal-content" class="fixture-details"></div>
             </div>
         </div>
     </div>
